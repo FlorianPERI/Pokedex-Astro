@@ -3,18 +3,26 @@ import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
 import PokemonCard from '../components/PokemonCard.astro';
 
+
 const response = await fetch("https://tyradex.tech/api/v1/gen");
 const allGenerations = await response.json();
+console.log(allGenerations.length);
 
+const fromValues =[]
+for (let i = 0; i < allGenerations.length; i++) {
+  fromValues.push(allGenerations[i].from);
+}
+
+const imgAdress = "https://raw.githubusercontent.com/Yarkis01/PokeAPI/images/sprites/";
 ---
 
 <Layout title="Welcome to PokeAstro !">
   <Header />
-  <div class="flex flex-col flex-wrap w-full items-center justify-center text-center p-2">
+  <div class="flex flex-row flex-wrap w-full items-center justify-center text-center p-2">
   
     {allGenerations.map((generation) => (
   <ul>
-    <li><a href=`gen/${generation.generation}`> Generation : {generation.generation}</a></li>
+    <li class="p-5"><a href=`gen/${generation.generation}`> Generation {generation.generation} <img src=`${imgAdress}${fromValues[generation.generation-1]}/regular.png` class="h-24"></a></li>
     </ul>
  ))}
 </div>
