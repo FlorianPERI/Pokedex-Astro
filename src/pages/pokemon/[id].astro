@@ -1,0 +1,95 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Header from "../../components/Header.astro";
+const {id} = Astro.params;
+
+export async function getStaticPaths() {
+  const paths = [];
+  for (let i = 1; i <= 1000; i++) {
+    paths.push({params: {id: i.toString()}});
+  }
+  return paths;
+}
+
+const pokemon = await fetch(`https://tyradex.vercel.app/api/v1/pokemon/${id}`)
+  .then(res => res.json())
+  .then(data => data)
+  .catch(err => console.log(err));
+
+
+  const getPreEvolutionData = (pokemon) => {
+  if (pokemon.evolution.pre !== null) {
+    const objects = pokemon.evolution.pre.reduce((acc, object) => {
+      acc.push(object);
+      return acc;
+    }, []);
+
+    return objects;
+  } else {
+    return [];
+  }
+};
+
+const getNextEvolutionData = (pokemon) => {
+  if (pokemon.evolution.next !== null) {
+    const objects = pokemon.evolution.next.reduce((acc, object) => {
+      acc.push(object);
+      return acc;
+    }, []);
+
+    return objects;
+  } else {
+    return [];
+  }
+};
+
+const imgAdress = "https://raw.githubusercontent.com/Yarkis01/PokeAPI/images/sprites/";
+
+---
+
+<Layout>
+  <Header>
+    <span class="ml-2 md:ml-0">{pokemon.name.fr}</span>
+  </Header>
+  <div class="flex flex-col w-full items-center text-center p-2">
+    <img src={pokemon.sprites.regular} alt={pokemon.name.fr} class="h-48" transition:name=`media-image-${pokemon.name.fr}`/>
+    <img src={pokemon.sprites.shiny} alt={pokemon.name.fr} class="h-48" transition:name=`media-image-${pokemon.name.fr}`/>
+    <h4 class="text-xl">
+      Taille: {pokemon.height}<br/>
+      Poids: {pokemon.weight}<br/>
+      Types: {pokemon.types.map(type => type.name).join(', ')}<br/>
+    </h4>
+    <div class="text-lg mt-4">
+      Stats:
+      <ul>
+        <li>HP: { pokemon.stats.hp}</li>
+        <li>Attack: {pokemon.stats.atk}</li>
+        <li>Defense: {pokemon.stats.def}</li>
+        <li>Special Attack: {pokemon.stats.spe_atk}</li>
+        <li>Special Defense: {pokemon.stats.spe_def}</li>
+        <li>Speed: {pokemon.stats.vit}</li>
+      </ul>
+    </div>
+    <div class="text-lg mt-4">
+      <div class="text-lg mt-4">
+        <h4 class="text-x1 font-bold">
+        Pré-évolutions
+      </h4>
+        <ul>
+          
+          {getPreEvolutionData(pokemon).map((object) => (
+            <li><a href={`/pokemon/${object.pokedexId.toString()}`}><img src=`${imgAdress}${object.pokedexId.toString()}/regular.png` alt={object.name} class="h-24" transition:name=`media-image-${object.name}`/>{object.name}</a></li>
+          ))}
+        </ul>
+        <h4 class="text-xl font-bold">
+        Evolutions
+      </h4>
+        <ul>
+          {getNextEvolutionData(pokemon).map((object) => (
+            <li><a href={`/pokemon/${object.pokedexId.toString()}`}><img src=`${imgAdress}${object.pokedexId.toString()}/regular.png` alt={object.name} class="h-24" transition:name=`media-image-${object.name}`/>{object.name}</a></li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </div>
+</Layout>
