@@ -21,9 +21,9 @@ const imgAdress = "https://raw.githubusercontent.com/Yarkis01/PokeAPI/images/spr
   <div class="flex flex-row flex-wrap w-full items-center justify-center text-center p-2">
   
     {allGenerations.map((generation) => (
-  <ul>
-    <li class="p-5"><a href=`gen/${generation.generation}`> Generation {generation.generation} <img src=`${imgAdress}${fromValues[generation.generation-1]}/regular.png` class="h-24"></a></li>
-    </ul>
+  
+    <a class={`bg-yellow-500 p-10 border 2 rounded-xl list-none m-2`} href=`gen/${generation.generation}`> Generation {generation.generation} <img src=`${imgAdress}${fromValues[generation.generation-1]}/regular.png` class="h-24"></a>
+    
  ))}
 </div>
 </Layout>

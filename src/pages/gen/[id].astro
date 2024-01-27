@@ -23,13 +23,12 @@ const pokemons = await fetch(`https://tyradex.vercel.app/api/v1/gen/${id}`)
         <span class="ml-2 md:ml-0">Generation {id}</span>
     </Header>
     <div class="flex flex-row flex-wrap w-full items-center justify-center text-center p-2">
-    {
-      pokemons.map((pokemon) => (
-       <ul>
+    {pokemons.map((pokemon) => (
+       
 
-         <li><a href=`/pokemon/${pokemon.pokedexId}`> <img src={pokemon.sprites.regular} alt={pokemon.name.fr} class="h-32" transition:name=`media-image-${pokemon.name.fr}`>{pokemon.name.fr}</a></li>
-         </ul>
+         <a class="bg-yellow-500 p-10 border 2 rounded-xl list-none m-2" href=`/pokemon/${pokemon.pokedexId}`> <img src={pokemon.sprites.regular} alt={pokemon.name.fr} class="h-32" transition:name=`media-image-${pokemon.name.fr}`>{pokemon.name.fr}</a>  
       ))
        }
+      </ul>
       </div>
 </Layout>
