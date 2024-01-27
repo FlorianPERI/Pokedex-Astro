@@ -18,7 +18,7 @@ const pokemons = await fetch(`https://tyradex.vercel.app/api/v1/gen/${id}`)
     .catch(err => console.log(err));
 ---
 
-<Layout `Generation ${id} !`>
+<Layout title = `Pokemons de la génération ${id}`>
     <Header>
         <span class="ml-2 md:ml-0">Generation {id}</span>
     </Header>
